@@ -1,238 +1,141 @@
-# 🚀 Automated Cloud-Integrated Customer Analytics Pipeline
+# 📊 End-to-End Customer Analytics & Predictive Churn Pipeline
 
-An end-to-end Data Engineering system that automates the lifecycle of consumer data — from local CSV ingestion to a **Supabase Cloud PostgreSQL** database and live **Power BI** reporting.
+This project demonstrates a professional-grade **Data Engineering & Machine Learning** workflow. It automates the transition from raw, messy consumer data to a cloud-hosted, AI-enriched dataset ready for real-time Business Intelligence (BI).
 
 ---
 
-## 📋 Project Overview
+## 🏗️ System Architecture
 
-This project represents a full migration from a local, manual workflow to a **Cloud-Integrated ETL Pipeline**. By combining Python automation with cloud-hosted storage, the system ensures that business insights are always up-to-date, secure, and accessible from anywhere.
+The project is structured as a **Closed-Loop Intelligence Pipeline**:
 
-It demonstrates production-ready practices including automation scheduling, cloud database integration, environment-based configuration, and BI connectivity.
+1. **Ingestion & ETL:**  
+   Raw CSV data is ingested via Python, where it undergoes rigorous cleaning, including median-based imputation for missing review ratings and schema standardization.
+
+2. **Statistical Feature Engineering:**
+   - **Age Quartiles:** Instead of arbitrary brackets, we use `pd.qcut` to divide customers into four balanced quartiles: *Young Adult, Adult, Middle-Aged, and Senior*.
+   - **Behavioral Labeling:** A multi-factor logic identifies **Churn (1)** vs **Loyal (0)** customers based on purchase frequency (e.g., Annual/3-month) and dissatisfaction thresholds.
+
+3. **Machine Learning Inference:**  
+   A **Random Forest Classifier** performs in-flight predictions. The model analyzes 7+ behavioral features to assign a `churn_risk` score to every record.
+
+4. **Cloud Deployment:**  
+   The processed and enriched data is pushed to a **Supabase (PostgreSQL)** instance, ensuring global accessibility.
+
+5. **BI Presentation:**  
+   **Power BI Desktop** connects to the cloud source via secure SSL to visualize churn trends across demographics.
 
 ---
 
 ## 🛠️ Technical Stack
 
-| Category | Tools |
-| :--- | :--- |
-| **Language** | Python 3.13 (Pandas, SQLAlchemy, Dotenv) |
-| **Cloud Database** | Supabase (PostgreSQL) |
-| **Automation** | Windows Task Scheduler |
-| **Local Database** | PostgreSQL (pgAdmin 4) |
-| **BI / Visualization** | Power BI Desktop & Power BI Service |
-| **Environment** | PyCharm (Virtual Environments) |
+- **Language:** Python 3.10+
+- **Data Processing:** Pandas, NumPy, SQLAlchemy
+- **Machine Learning:** Scikit-Learn (Random Forest, Label Encoding)
+- **Database:** Supabase / PostgreSQL
+- **Environment Management:** Python-Dotenv
+- **BI Tool:** Power BI (DAX, Power Query)
 
 ---
 
-## ⚙️ System Architecture & Workflow
+## 🧠 Machine Learning Engine
 
-### 1️⃣ Data Ingestion & ETL (Python)
+### Features Used for Prediction
 
-A modular Python script (`customer_pipeline.py`) handles:
-
-- **Data Cleaning**
-  - Category-based median imputation for missing Review Ratings
-- **Normalization**
-  - Schema standardization using `snake_case`
-- **Feature Engineering**
-  - Automated age-group binning
-  - Purchase frequency mapping
-- **Database Push**
-  - Automatic upload to PostgreSQL (Local or Cloud)
-
----
-
-### 2️⃣ Cloud Data Warehousing (Supabase)
-
-The pipeline integrates directly with **Supabase Cloud PostgreSQL** using `SQLAlchemy`.
-
-- Data is pushed to a Singapore-hosted PostgreSQL instance
-- Enables remote BI access
-- Ensures high availability
-- Eliminates dependency on localhost databases
-
----
-
-### 3️⃣ Enterprise Automation
-
-The system is fully automated via **Windows Task Scheduler**.
-
-- Executes inside isolated `.venv`
-- Runs daily without manual intervention
-- Logs execution status
-- Ensures consistent reporting updates
-
----
-
-### 4️⃣ Real-Time BI Visualization
-
-Power BI connects via Cloud PostgreSQL connector.
-
-Since the database is cloud-hosted:
-- Dashboards can refresh from anywhere
-- No local machine dependency
-- Fully remote reporting capability
-
----
-
-## 🛡️ Production-Grade Features
-
-### 📡 Cloud-Native Toggle
-
-The pipeline includes a:
-
-```
-USE_CLOUD = True / False
-```
-
-This enables seamless switching between:
-- Local Development (localhost PostgreSQL)
-- Production Deployment (Supabase Cloud)
-
----
-
-### 📝 Robust Logging
-
-Each execution is recorded in:
-
-```
-pipeline.log
-```
-
-Example log output:
-
-```
-2026-02-23 15:31:12 - INFO - Pipeline started (Target: Cloud).
-2026-02-23 15:31:15 - INFO - Pipeline successful: Data pushed to Supabase Cloud.
-```
-
-This ensures auditability and easier debugging.
-
----
-
-### 🔐 Secure Configuration
-
-Sensitive credentials are stored securely using:
-
-- `.env` file
-- Environment variables
-- `python-dotenv`
-
-No database passwords are hardcoded in the source code.
+- **Age & Age Group**
+- **Purchase Amount**
+- **Review Rating**
+- **Frequency of Purchases**
+- **Subscription Status**
+- Encoded categorical variables
+- Engineered behavioral flags
 
 ---
 
 ## 📂 Repository Structure
 
-```
-customer_pipeline.py      # Core ETL engine
-requirements.txt          # Python dependencies
-.env.example              # Environment variable template
-pipeline.log              # Execution logs
-Dashboard.pbix            # Power BI dashboard
-```
+| File | Purpose |
+|------|----------|
+| `train_model.py` | Trains the Random Forest model and generates `churn_model.pkl`. |
+| `customer_pipeline.py` | Main ETL + ML pipeline script. Cleans data, predicts churn, uploads to Supabase. |
+| `churn_model.pkl` | Serialized trained ML model. |
+| `.env` | Local credential storage (NOT pushed to GitHub). |
+| `requirements.txt` | Dependency management file. |
 
 ---
 
-## 🚀 How to Set Up the Project
+## 🚀 Deployment Guide
 
-### 1️⃣ Clone the Repository
+### 1️⃣ Prerequisites
 
-```
-git clone https://github.com/Dheemanthgowda00/Customer-Trends-Data-analysis-pipeline.git
-```
-
----
-
-### 2️⃣ Initialize Virtual Environment
-
-```
-python -m venv .venv
-.\.venv\Scripts\activate
-pip install -r requirements.txt
-```
+- Supabase PostgreSQL project
+- Power BI Desktop
+- Python 3.10+
 
 ---
 
-### 3️⃣ Configure Environment Variables
+### 2️⃣ Environment Setup
 
 Create a `.env` file in the root directory:
 
-```
-# Supabase Cloud Credentials
-SUPABASE_HOST=db.your_id.supabase.co
-SUPABASE_USER=postgres
-SUPABASE_PASS=your_password
-SUPABASE_NAME=postgres
-SUPABASE_PORT=5432
-```
+SUPABASE_USER=postgres  
+SUPABASE_PASS=Your_Secure_Password  
+SUPABASE_HOST=db.your_project_id.supabase.co  
+SUPABASE_PORT=5432  
+SUPABASE_NAME=postgres  
 
 ---
 
-### 4️⃣ Run the Automated Pipeline
+### 3️⃣ Installation & Execution
 
-```
+# Install dependencies
+pip install -r requirements.txt
+
+# Train the ML model
+python train_model.py
+
+# Run ETL + ML pipeline and upload to cloud
 python customer_pipeline.py
-```
-
-If `USE_CLOUD = True`, the cleaned dataset will automatically be pushed to Supabase Cloud.
 
 ---
 
-## 📊 Enterprise Capabilities Demonstrated
+## 📈 Power BI Integration
 
-✔ Automated ETL  
-✔ Cloud Database Integration  
-✔ Production Logging  
-✔ Secure Credential Management  
-✔ Scheduled Task Execution  
-✔ Remote BI Reporting  
-✔ Scalable Architecture  
+- Connect Power BI to Supabase PostgreSQL.
+- Import table: `customer_final_ml`
+- Enable SSL connection.
+- If Windows SSL issue occurs → Trust server certificate in advanced settings.
 
----
+### Key Dashboard Visual
 
-## 🎯 Why This Project Matters
-
-This project demonstrates real-world:
-
-- Data Engineering principles
-- Cloud database deployment
-- Automation strategy
-- BI integration workflow
-- Production-ready coding practices
-
-It bridges the gap between Data Analytics and Data Engineering.
+- **Churn Risk Heatmap**
+- Age Group vs Product Category Risk Distribution
+- Subscription Impact Analysis
+- Purchase Frequency vs Churn Trend
 
 ---
 
-## 👨‍💻 Author
+## 🔐 Security Best Practices
+
+- Never push `.env` to GitHub.
+- Use environment variables for credentials.
+- Use SSL-enabled PostgreSQL connections.
+- Restrict Supabase database access via IP rules if needed.
+
+---
+
+## 📌 Future Enhancements
+
+- Add model performance tracking (Accuracy, ROC-AUC, Confusion Matrix)
+- Deploy API endpoint using FastAPI
+- Automate pipeline using Airflow
+- Implement real-time streaming ingestion
+- Containerize with Docker
+
+---
+
+## 👨‍💻 Developed By
 
 Dheemanth  
+Software Engineer | Data Analytics Specialist
 
-Specializing in Software Development, Robotics, and Data Systems.
-
----
-
-## ✅ Final Checklist Before Publishing
-
-1. Run:
-   ```
-   pip freeze > requirements.txt
-   ```
-
-2. Ensure:
-   ```
-   USE_CLOUD = True
-   ```
-   is enabled before pushing to GitHub.
-
-3. Upload:
-   - Dashboard screenshots (store in `/images/`)
-   - Supabase table preview (optional)
-
-4. Add screenshots to README for stronger portfolio impact.
-
----
-
-If you found this project valuable, consider giving it a ⭐ on GitHub.
+GitHub: https://github.com/Dheemanthgowda00
