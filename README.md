@@ -1,153 +1,238 @@
-# 🚀 Customer Trends Data Analysis Pipeline (Automated Analytics Workflow)
+# 🚀 Automated Cloud-Integrated Customer Analytics Pipeline
 
-An end-to-end **automated data analytics pipeline** that transforms raw customer shopping behavior data into structured insights, SQL-driven analytics, and interactive dashboards.
-
-This project not only performs analysis — it demonstrates how to **automate repetitive data tasks**, ensuring scalability, consistency, and production-ready workflows.
+An end-to-end Data Engineering system that automates the lifecycle of consumer data — from local CSV ingestion to a **Supabase Cloud PostgreSQL** database and live **Power BI** reporting.
 
 ---
 
-## 📌 Project Overview
+## 📋 Project Overview
 
-The goal of this project is to build a **semi-automated retail analytics system** that:
+This project represents a full migration from a local, manual workflow to a **Cloud-Integrated ETL Pipeline**. By combining Python automation with cloud-hosted storage, the system ensures that business insights are always up-to-date, secure, and accessible from anywhere.
 
-- Automatically cleans and preprocesses raw customer data
-- Structures datasets for downstream analysis
-- Enables SQL-based automated insight extraction
-- Feeds dashboards for real-time business monitoring
-- Reduces manual reporting effort
-
-This simulates a real-world **data engineering + analytics workflow** used in retail and e-commerce industries.
+It demonstrates production-ready practices including automation scheduling, cloud database integration, environment-based configuration, and BI connectivity.
 
 ---
 
-## 🤖 Automation Focus
+## 🛠️ Technical Stack
 
-This project emphasizes automation in the following areas:
-
-### 🔄 Automated Data Cleaning Pipeline
-- Standardized preprocessing steps
-- Automatic handling of missing values
-- Data type conversions
-- Duplicate removal
-- Structured output generation
-
-The `customer_pipeline.py` script ensures repeatable, consistent transformations whenever new raw data is added.
+| Category | Tools |
+| :--- | :--- |
+| **Language** | Python 3.13 (Pandas, SQLAlchemy, Dotenv) |
+| **Cloud Database** | Supabase (PostgreSQL) |
+| **Automation** | Windows Task Scheduler |
+| **Local Database** | PostgreSQL (pgAdmin 4) |
+| **BI / Visualization** | Power BI Desktop & Power BI Service |
+| **Environment** | PyCharm (Virtual Environments) |
 
 ---
 
-### 🗄 Automated Insight Extraction (SQL)
-- Pre-written reusable SQL queries
-- Automated KPI calculations
-- Revenue and segmentation metrics
-- Business-ready structured outputs
+## ⚙️ System Architecture & Workflow
 
-This removes the need for manual recalculation of metrics.
+### 1️⃣ Data Ingestion & ETL (Python)
 
----
+A modular Python script (`customer_pipeline.py`) handles:
 
-### 📊 Dashboard-Ready Data Flow
-- Cleaned datasets feed directly into Power BI
-- Minimal manual dashboard adjustments
-- Refresh-ready workflow
-- Supports scalable reporting
-
----
-
-### 🚀 Future Automation Enhancements
-- Scheduled execution using Cron / Task Scheduler
-- Integration with Apache Airflow
-- Cloud-based automation (AWS / GCP)
-- Automated email reports
-- API-based real-time data ingestion
+- **Data Cleaning**
+  - Category-based median imputation for missing Review Ratings
+- **Normalization**
+  - Schema standardization using `snake_case`
+- **Feature Engineering**
+  - Automated age-group binning
+  - Purchase frequency mapping
+- **Database Push**
+  - Automatic upload to PostgreSQL (Local or Cloud)
 
 ---
 
-## 🛠️ Tech Stack
+### 2️⃣ Cloud Data Warehousing (Supabase)
 
-- Python (Pandas, NumPy, Matplotlib, Seaborn)
-- SQL
-- Power BI
-- Jupyter Notebook
-- Git & GitHub
+The pipeline integrates directly with **Supabase Cloud PostgreSQL** using `SQLAlchemy`.
+
+- Data is pushed to a Singapore-hosted PostgreSQL instance
+- Enables remote BI access
+- Ensures high availability
+- Eliminates dependency on localhost databases
+
+---
+
+### 3️⃣ Enterprise Automation
+
+The system is fully automated via **Windows Task Scheduler**.
+
+- Executes inside isolated `.venv`
+- Runs daily without manual intervention
+- Logs execution status
+- Ensures consistent reporting updates
+
+---
+
+### 4️⃣ Real-Time BI Visualization
+
+Power BI connects via Cloud PostgreSQL connector.
+
+Since the database is cloud-hosted:
+- Dashboards can refresh from anywhere
+- No local machine dependency
+- Fully remote reporting capability
+
+---
+
+## 🛡️ Production-Grade Features
+
+### 📡 Cloud-Native Toggle
+
+The pipeline includes a:
+
+```
+USE_CLOUD = True / False
+```
+
+This enables seamless switching between:
+- Local Development (localhost PostgreSQL)
+- Production Deployment (Supabase Cloud)
+
+---
+
+### 📝 Robust Logging
+
+Each execution is recorded in:
+
+```
+pipeline.log
+```
+
+Example log output:
+
+```
+2026-02-23 15:31:12 - INFO - Pipeline started (Target: Cloud).
+2026-02-23 15:31:15 - INFO - Pipeline successful: Data pushed to Supabase Cloud.
+```
+
+This ensures auditability and easier debugging.
+
+---
+
+### 🔐 Secure Configuration
+
+Sensitive credentials are stored securely using:
+
+- `.env` file
+- Environment variables
+- `python-dotenv`
+
+No database passwords are hardcoded in the source code.
 
 ---
 
 ## 📂 Repository Structure
 
-Customer-Trends-Data-analysis-pipeline/
-│
-├── customer_pipeline.py                         # Automated ETL pipeline
-├── customer_shopping_behavior.csv               # Raw dataset
-├── Customer_Shopping_Behaviour_Analysis.ipynb  # Exploratory Analysis
-├── Customer Behavior queries.sql                # Automated business queries
-├── Customer Behavior Dashboard.pbix             # Interactive Dashboard
-├── Customer Shopping Behavior Analysis.pdf      # Analytical Report
-├── Retail_Revenue_Growth_Strategy.pdf           # Strategy Insights
-└── README.md
+```
+customer_pipeline.py      # Core ETL engine
+requirements.txt          # Python dependencies
+.env.example              # Environment variable template
+pipeline.log              # Execution logs
+Dashboard.pbix            # Power BI dashboard
+```
 
 ---
 
-## 🔄 Automated Workflow Architecture
+## 🚀 How to Set Up the Project
 
-1️⃣ Raw Data Ingestion  
-2️⃣ Automated Cleaning Script (`customer_pipeline.py`)  
-3️⃣ Structured Dataset Output  
-4️⃣ SQL KPI Extraction  
-5️⃣ Dashboard Visualization  
-6️⃣ Business Decision Insights  
+### 1️⃣ Clone the Repository
 
----
-
-## 📊 Business Impact
-
-- Reduced manual data preparation time
-- Consistent KPI generation
-- Scalable reporting structure
-- Faster business decision-making
-- Production-ready analytical pipeline
+```
+git clone https://github.com/Dheemanthgowda00/Customer-Trends-Data-analysis-pipeline.git
+```
 
 ---
 
-## 🚀 How to Run the Automated Pipeline
+### 2️⃣ Initialize Virtual Environment
 
-### Step 1: Install Dependencies
+```
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-pip install pandas numpy matplotlib seaborn
+---
 
-### Step 2: Execute the Automated Pipeline
+### 3️⃣ Configure Environment Variables
 
+Create a `.env` file in the root directory:
+
+```
+# Supabase Cloud Credentials
+SUPABASE_HOST=db.your_id.supabase.co
+SUPABASE_USER=postgres
+SUPABASE_PASS=your_password
+SUPABASE_NAME=postgres
+SUPABASE_PORT=5432
+```
+
+---
+
+### 4️⃣ Run the Automated Pipeline
+
+```
 python customer_pipeline.py
+```
 
-The script:
-- Cleans the dataset
-- Outputs structured data
-- Prepares it for SQL & dashboard integration
-
-### Step 3: Run SQL Queries
-
-Import the processed dataset into your database and execute:
-Customer Behavior queries.sql
-
-### Step 4: Open Power BI Dashboard
-
-Open the .pbix file and refresh data to view updated insights.
+If `USE_CLOUD = True`, the cleaned dataset will automatically be pushed to Supabase Cloud.
 
 ---
 
-## 🎯 Why This Project Stands Out
+## 📊 Enterprise Capabilities Demonstrated
 
-Unlike simple analysis notebooks, this project:
+✔ Automated ETL  
+✔ Cloud Database Integration  
+✔ Production Logging  
+✔ Secure Credential Management  
+✔ Scheduled Task Execution  
+✔ Remote BI Reporting  
+✔ Scalable Architecture  
 
-✔ Demonstrates ETL automation  
-✔ Enables scalable analytics workflows  
-✔ Simulates production-style reporting  
-✔ Bridges Data Engineering + Data Analytics  
-✔ Highlights automation-focused thinking  
+---
+
+## 🎯 Why This Project Matters
+
+This project demonstrates real-world:
+
+- Data Engineering principles
+- Cloud database deployment
+- Automation strategy
+- BI integration workflow
+- Production-ready coding practices
+
+It bridges the gap between Data Analytics and Data Engineering.
 
 ---
 
 ## 👨‍💻 Author
 
-Dheemanth Gowda
+Dheemanth  
 
-If this project helped you understand automated analytics pipelines, consider starring the repository ⭐
+Specializing in Software Development, Robotics, and Data Systems.
+
+---
+
+## ✅ Final Checklist Before Publishing
+
+1. Run:
+   ```
+   pip freeze > requirements.txt
+   ```
+
+2. Ensure:
+   ```
+   USE_CLOUD = True
+   ```
+   is enabled before pushing to GitHub.
+
+3. Upload:
+   - Dashboard screenshots (store in `/images/`)
+   - Supabase table preview (optional)
+
+4. Add screenshots to README for stronger portfolio impact.
+
+---
+
+If you found this project valuable, consider giving it a ⭐ on GitHub.
