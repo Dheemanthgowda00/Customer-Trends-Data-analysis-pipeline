@@ -90,15 +90,10 @@ Customer-Trends-Data-analysis-pipeline/
 ## 🔄 Automated Workflow Architecture
 
 1️⃣ Raw Data Ingestion  
-⬇  
 2️⃣ Automated Cleaning Script (`customer_pipeline.py`)  
-⬇  
 3️⃣ Structured Dataset Output  
-⬇  
 4️⃣ SQL KPI Extraction  
-⬇  
 5️⃣ Dashboard Visualization  
-⬇  
 6️⃣ Business Decision Insights  
 
 ---
